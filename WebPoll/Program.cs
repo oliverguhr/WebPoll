@@ -58,7 +58,7 @@ namespace WebPoll
 
             Action<int> test = (i) =>
             {
-                TestClient2 testClient = new TestClient2(new Uri("http://bdwordpress.azurewebsites.net/"));
+                TestClient testClient = new TestClient(new Uri("http://bdwordpress.azurewebsites.net/"));
                 if (i % 2 == 0)
                 {
                     testClient.AcceptCompression(true);
@@ -97,13 +97,13 @@ namespace WebPoll
 
     }
 
-    public class TestClient2
+    public class TestClient
     {
         private WebClient Client { get; set; }
 
         private Uri Uri { get; set; }
 
-        public TestClient2(Uri uri)
+        public TestClient(Uri uri)
         {
             Client = new WebClient();
             Client.CachePolicy = new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.NoCacheNoStore);
@@ -133,55 +133,6 @@ namespace WebPoll
             {
                 ContentEncoding = Client.ResponseHeaders.AllKeys.Contains("Content-Encoding") ? Client.ResponseHeaders.GetValues("Content-Encoding").First() : string.Empty,
                 ContentLength = Client.ResponseHeaders.AllKeys.Contains("Content-Length") ? Client.ResponseHeaders.GetValues("Content-Length").First() : string.Empty,
-                ElapsedMilliseconds = stopWatch.ElapsedMilliseconds
-            };
-        }
-    }
-
-    public class TestClient
-    {
-        private HttpWebRequest Request { get; set; }
-
-        private Uri Uri { get; set; }
-
-        public TestClient(Uri uri)
-        {
-            Uri = uri;
-            Request = HttpWebRequest.CreateHttp(Uri);
-            Request.UserAgent = "LoadTest/" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            Request.CachePolicy = new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.NoCacheNoStore);
-            
-        }
-
-        public void AcceptCompression(bool accept)
-        {
-            if (accept)
-            {
-                Request.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate,sdch");
-            }
-            else
-            {
-                Request.Headers.Remove(HttpRequestHeader.AcceptEncoding);
-            }          
-        }
-
-        public TestResult Test()
-        {
-            var stopWatch = new Stopwatch();
-            stopWatch.Start();          
-            var response = (HttpWebResponse)Request.GetResponse();
-
-            if (response.StatusCode == HttpStatusCode.OK)
-            {
-                new StreamReader(response.GetResponseStream()).ReadToEnd();
-            }
-          
-            stopWatch.Stop();
-            response.Close();
-            return new TestResult
-            {
-                ContentEncoding = response.ContentEncoding,
-                ContentLength = response.ContentLength.ToString(),
                 ElapsedMilliseconds = stopWatch.ElapsedMilliseconds
             };
         }
