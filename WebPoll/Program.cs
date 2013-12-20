@@ -90,35 +90,8 @@ namespace WebPoll
 
             };
                   
-           var demo =  Parallel.For(0, 10000, test);            
-
-         //   for (int i = 1; i <= 1000; i++) test(i);
-
-            //// The number of concurrent requests
-            //int threads = 25;
-
-            //// The number of total requests to execute
-            //int requests = 100000;
-
-            //// The remaining number of requests to execute
-            //int requestsRemaining = requests;
-
-            ////var sw = Stopwatch.StartNew();
-            ////string query = "?ticks=" + Environment.TickCount.ToString();
-            //for (int i = 0; i < threads; i++)
-            //{
-            //    var thread = new Thread(() =>
-            //    {
-            //        while (Interlocked.Decrement(ref requestsRemaining) > 0)
-            //        {
-            //            test(requestsRemaining);
-            //        }
-
-            //    });
-            //    thread.Start();
-            //}
-
-
+            var demo =  Parallel.For(0, 10000, test);            
+      
             Console.ReadLine();
         }
 
