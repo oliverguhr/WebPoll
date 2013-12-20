@@ -15,6 +15,8 @@ namespace WebPoll
         private static object OutputLock = new Object();
         static void Main(string[] args)
         {
+            //insert load testing target here -> 
+            Uri traget = new Uri("http://123.yourdomainhere.com/");
 
             List<TestResult> ResultSetCompressionEnabled = new List<TestResult>();
             List<TestResult> ResultSetCompressionDisabled = new List<TestResult>();
@@ -58,7 +60,7 @@ namespace WebPoll
 
             Action<int> test = (i) =>
             {
-                TestClient testClient = new TestClient(new Uri("http://bdwordpress.azurewebsites.net/"));
+                TestClient testClient = new TestClient(traget);
                 if (i % 2 == 0)
                 {
                     testClient.AcceptCompression(true);
